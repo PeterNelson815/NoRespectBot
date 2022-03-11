@@ -46,59 +46,11 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
-  // REACT to a message
-  if (message.content.indexOf('cumbus') >= 0) {
-    const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'cumbus');
-    message.react(reactionEmoji)
-  }
 
-  // mention everyone attending an event in a new message
-  if (message.content.indexOf('send reminder') >= 0) {
-    const scheduledEvent = message.guild.scheduledEvents.cache.find(event => event.name === 'writing sick code bro')
-    const subscribers = await scheduledEvent.fetchSubscribers()
-    subscribers.forEach(scriber => {
-      const reminderChannel = client.channels.cache.find(channel => channel.name === 'reminders')
-      reminderChannel.send(`hey <@${scriber.user.id}> don't forget about the event`)
-    })
-  }
+  // every submitted message will pass through handleReactions
+  const { handleReactions } = require('./reactions.js');
+  handleReactions(message)
 
-  // move a text channel to inactive
-  if (message.content.indexOf('clean') >= 0) {
-    const channelToMove = message.guild.channels.cache.find(c => c.name === 'offseason')
-    const channelMessages = await channelToMove.messages.fetch({limit: 1})
-    const lastMessage = channelMessages.first()
-
-    if (Date.now() - lastMessage.createdTimestamp > 2592000000) { // number of milliseconds in 30 days 
-      channelToMove.setParent(inactiveCategory)
-    }
-  }
 })
 
 client.login(token);
-
-
-/*
-
-get all members of a role
-
-  const hackerRole = message.guild.roles.cache.find(role => role.name === 'Elite Hackers')
-  const hackerMembers = hackerRole.members.map(z => z.user.tag)
-  hackerMembers.forEach(z => console.log(z))
-
-  */
-
-
-/*
-
-view all roles of user
-
-console.log(message.member.roles.cache)
-console.log('does the sender have a role?')
-
-if(message.member.roles.cache.size >= 2) { // 2 because @everyone is a default role that everyone has
-  console.log('yes')
-} else {
-  console.log('no')
-}
-
-*/
