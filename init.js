@@ -19,6 +19,7 @@ const rest = new REST({ version: '9' }).setToken(token);
     console.log('Started refreshing application (/) commands.');
 
     await rest.put(
+      // the following numbers are specific to our bot
       Routes.applicationGuildCommands('951313574356221993', '937849615049445496'),
       { body: commands },
     );
@@ -46,8 +47,15 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
+  console.log(message.member.roles.cache.map(z => z.name))
 
-  // every submitted message will pass through handleReactions
+  // only react admins while testing
+  if (!(message.member.roles.cache.some(role => role.name.toLocaleLowerCase() === 'moderators'))) {
+    console.log('not reacting to message, not sent from a moderator')
+    return;
+  }
+
+  // every message on the server will pass through handleReactions
   const { handleReactions } = require('./reactions.js');
   handleReactions(message)
 
