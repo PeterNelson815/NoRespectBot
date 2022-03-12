@@ -1,6 +1,8 @@
 const { REST, Events } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { token } = require('./auth.json')
+const { handleReactions } = require('./reactions.js');
+const { handleReplies } = require('./replies.js');
 
 // invite link with bot/commands scopes, general permissions but nothing crazy (no admin, no server management stuff, just messages/emojis etc): https://discord.com/api/oauth2/authorize?client_id=951313574356221993&permissions=544390638656&scope=bot%20applications.commands
 
@@ -47,18 +49,9 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
-  console.log(message.member.roles.cache.map(z => z.name))
-
-  // only react admins while testing
-  if (!(message.member.roles.cache.some(role => role.name.toLocaleLowerCase() === 'moderators'))) {
-    console.log('not reacting to message, not sent from a moderator')
-    return;
-  }
-
-  // every message on the server will pass through handleReactions
-  const { handleReactions } = require('./reactions.js');
+  // every message on the server will pass through handleReactions and handleReplies
   handleReactions(message)
-
+  handleReplies(message)
 })
 
 client.login(token);
