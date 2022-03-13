@@ -1,5 +1,5 @@
 module.exports = {
-  mentionEveryoneByEventName: (guild, eventName) => {
+  mentionEveryoneByEventName: async (guild, eventName) => {
     const scheduledEvent = guild.scheduledEvents.cache.find(
       (event) => event.name === eventName
     )
@@ -7,7 +7,7 @@ module.exports = {
 
     const subscribers = await scheduledEvent.fetchSubscribers()
     subscribers.forEach((scriber) => {
-      const reminderChannel = client.channels.cache.find(
+      const reminderChannel = guild.channels.cache.find(
         (channel) => channel.name === 'norespect'
       )
       reminderChannel.send(

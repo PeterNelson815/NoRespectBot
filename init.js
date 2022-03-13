@@ -1,4 +1,4 @@
-const { REST, Events } = require('@discordjs/rest')
+const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
 const { token } = require('./auth.json')
 const { handleReactions } = require('./reactions.js')

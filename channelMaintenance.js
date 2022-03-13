@@ -6,13 +6,13 @@ module.exports = {
     )
     if (!inactiveCategory) return
 
-    guild.channels.cache.forEach((channel) => {
+    guild.channels.cache.forEach(async (channel) => {
       const channelMessages = await channel.messages.fetch({ limit: 1 })
       const lastMessage = channelMessages.first()
 
       if (Date.now() - lastMessage.createdTimestamp > 2592000000) {
         // number of milliseconds in 30 days
-        channelToMove.setParent(inactiveCategory)
+        channel.setParent(inactiveCategory)
       }
     })
   },
