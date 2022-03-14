@@ -1,16 +1,11 @@
 module.exports = {
-  handleCommand: async (interaction) => {
-    if (!interaction.isCommand) return
+  handleCommands: async (message) => {
+    if (message.content[0] !== '=') return
+    const messageArgs = message.content.toLocaleLowerCase().slice(1).split(' ')
 
-    if (interaction.commandName === 'flipacoin') {
-      const message = Math.random() > 0.4 ? 'HEADS' : 'TAILS'
-      await interaction.reply(message)
-    }
-
-    if (interaction.commandName === 'chuck') {
-      await interaction.channel.send({
-        files: ['./images/chuck.png'],
-      })
+    if (messageArgs[0] === 'flipacoin') {
+      const response = Math.random() >= 0.5 ? 'HEADS' : 'TAILS'
+      await message.reply(response)
     }
   },
 }

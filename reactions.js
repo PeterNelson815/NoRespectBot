@@ -6,7 +6,11 @@ module.exports = {
       const emoji = message.guild.emojis.cache.find(
         (emoji) => emoji.name.toLocaleLowerCase() === reaction
       )
-      if (emoji) message.react(emoji)
+      if (emoji) {
+        message.react(emoji)
+      } else {
+        console.log(`no emoji found for ${reaction}`)
+      }
     })
   },
 }
