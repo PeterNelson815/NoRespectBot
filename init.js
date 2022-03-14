@@ -58,3 +58,9 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+
+const http = require("http");
+setInterval(function() {
+    http.get("http://bsb-no-respect-bot.herokuapp.com/");
+}, 300000); // every 5 minutes (300000)
