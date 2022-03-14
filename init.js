@@ -13,7 +13,6 @@ const client = new Client({
 })
 
 client.on('ready', () => {
-  console.log('testing auto deploy functionality on heroku')
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
