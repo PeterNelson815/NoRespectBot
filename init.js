@@ -62,5 +62,6 @@ app.listen(port, () => {
 
 const http = require("http");
 setInterval(function() {
-    http.get("http://bsb-no-respect-bot.herokuapp.com/");
+  console.log(`poking myself to stay awake at ${new Date(Date.now())}`)
+  http.get("http://bsb-no-respect-bot.herokuapp.com/");
 }, 300000); // every 5 minutes (300000)
