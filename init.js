@@ -1,4 +1,4 @@
-const { token } = require('./auth.json')
+const { createToken } = require('./auth.js')
 const { handleReactions } = require('./reactions.js')
 const { handleReplies } = require('./replies.js')
 const { handleCommands } = require('./commands.js')
@@ -43,4 +43,4 @@ client.on('messageCreate', async (message) => {
   handleReplies(message)
 })
 
-client.login(token)
+client.login(createToken())
