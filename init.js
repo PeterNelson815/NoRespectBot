@@ -1,9 +1,14 @@
+const { Client, Intents } = require('discord.js')
+
 const { createToken } = require('./auth.js')
 const { handleReactions } = require('./reactions.js')
 const { handleReplies } = require('./replies.js')
 const { handleCommands } = require('./commands.js')
+const { getProperty, writeToStore } = require('./datastore.js')
 
-const { Client, Intents } = require('discord.js')
+//start the webserver
+require('./webserver.js')
+
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
@@ -33,6 +38,7 @@ client.on('threadCreate', async (thread) => {
 })
 
 client.on('messageCreate', async (message) => {
+  await incrementMessageCounter()
   if (message.content[0] === '=') {
     handleCommands(message)
     // don't need to handle reactions/replies for bot commands
@@ -45,22 +51,10 @@ client.on('messageCreate', async (message) => {
 
 client.login(createToken())
 
-// random express junk to try to get heroku not to crash me
-
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
-const http = require('http')
-setInterval(function () {
-  console.log(`poking myself to stay awake at ${new Date(Date.now())}`)
-  http.get('http://bsb-no-respect-bot.herokuapp.com/')
-}, 300000) // every 5 minutes (300000)
+const incrementMessageCounter = async () => {
+  let messageCount = await getProperty('messageCount')
+  console.log('message count is', messageCount)
+  if (!messageCount) messageCount = 0
+  messageCount++
+  await writeToStore('messageCount', messageCount)
+}
