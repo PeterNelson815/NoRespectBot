@@ -9,6 +9,7 @@ const { getProperty, writeToStore } = require('./datastore.js')
 //start the webserver
 require('./webserver.js')
 
+//start the discord bot
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
@@ -19,13 +20,6 @@ const client = new Client({
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
-})
-
-client.on('interactionCreate', async (interaction) => {
-  if (interaction.isCommand()) {
-    const { handleCommands } = require('./commands.js')
-    return handleCommands(interaction)
-  }
 })
 
 client.on('threadCreate', async (thread) => {
