@@ -3,6 +3,7 @@ const datastoreFilename = 'store.json'
 
 const getStore = async () => {
   try {
+    fs.ensureFile(datastoreFilename)
     const data = await fs.readJson(datastoreFilename)
     console.log(`just got the store: ${data}`)
     formattedData = JSON.parse(data)
