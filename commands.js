@@ -7,5 +7,11 @@ module.exports = {
       const response = Math.random() >= 0.5 ? 'HEADS' : 'TAILS'
       await message.reply(response)
     }
+
+    if (messageArgs[0] === 'random') {
+      const choice = Math.floor(Math.random() * (messageArgs.length - 1)) + 1
+      console.log(choice)
+      await message.reply(messageArgs[choice])
+    }
   },
 }
