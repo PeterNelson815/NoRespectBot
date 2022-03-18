@@ -16,6 +16,8 @@ module.exports = {
     }
     if (Math.random() > 0.99) {
       message.reply('same tbh')
+    } else if (Math.random() > 0.98) {
+      message.reply('it do be like that')
     }
   },
 }
