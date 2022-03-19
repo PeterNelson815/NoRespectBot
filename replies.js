@@ -30,10 +30,18 @@ module.exports = {
       }
       return
     }
+
     const shouldIssueRandomReply = (Math.random() > 0.999) ||
       (new Date().getDay() === 5 && Math.random() > 0.995) // on fridays we party
     if (shouldIssueRandomReply) {
       message.reply(chooseRandomReply())
+    }
+
+    if (message.mentions.users.some(user => user.username === 'No Respect Bot')) {
+      if (message.content.toLocaleLowerCase().includes('bad') ||
+        message.content.toLocaleLowerCase().includes('shame on you')) {
+          message.reply('All good.')
+        }
     }
   }
 }
