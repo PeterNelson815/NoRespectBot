@@ -23,11 +23,11 @@ module.exports = {
           .includes('maybe your query was malformed')
       ) {
         message.reply('mathbot more like trashbot lmao')
-      } else if (Math.random() > 0.5) {
+      } /*else if (Math.random() > 0.5) {
         message.reply(
           `Do you have a source for that? Because I'm fairly certain that is NOT correct.`
-        )
-      }
+        ) <<<< this is good but mathbot splits its replies into multiple messages sometimes, need to only respond to one before re-enabling this
+      }*/
       return
     }
 
