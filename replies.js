@@ -1,3 +1,19 @@
+const replies = [
+  'sometimes it do be like that',
+  'same tbh',
+  'i was literally just about to type this myself',
+  'preach',
+  'All good.',
+  `i'd like to see someone even TRY to debate this`,
+  'do you have a source for that?'
+]
+
+
+const chooseRandomReply = () => {
+  const replyIndex = Math.floor(Math.random() * replies.length)
+  return replies[replyIndex]
+}
+
 module.exports = {
   handleReplies: (message) => {
     if (message.member.displayName === 'MathBot') {
@@ -14,10 +30,10 @@ module.exports = {
       }
       return
     }
-    if (Math.random() > 0.99) {
-      message.reply('same tbh')
-    } else if (Math.random() > 0.98) {
-      message.reply('it do be like that')
+    const shouldIssueRandomReply = (Math.random() > 0.999) ||
+      (new Date().getDay() === 5 && Math.random() > 0.995) // on fridays we party
+    if (shouldIssueRandomReply) {
+      message.reply(chooseRandomReply())
     }
-  },
+  }
 }

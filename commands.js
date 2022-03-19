@@ -1,5 +1,6 @@
 module.exports = {
   handleCommands: async (message) => {
+    //todo add help / descriptions for all of these and better error handling/edge cases
     if (message.content[0] !== '=') return
     const messageArgs = message.content.toLocaleLowerCase().slice(1).split(' ')
 
