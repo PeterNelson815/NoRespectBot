@@ -1,7 +1,10 @@
 const { initiateRace, startRace, finishRace } = require('./pokemon.js')
 
 const handlePokemonCommand = async (messageArgs, message, client) => {
-  if (!message.member.user.username.toLocaleLowerCase().includes('peter plankton')) return
+  if (!message.member.user.username.toLocaleLowerCase().includes('peter')) {
+    console.log('someone other than me tried to command')
+    return
+  }
 
   if (messageArgs[1] === 'initiate') {
     await initiateRace(client)

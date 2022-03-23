@@ -16,6 +16,9 @@ const client = new Client({
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
   ],
+  partials: [
+    'USER', 'MESSAGE', 'CHANNEL', 'REACTION'
+  ]
 })
 
 client.on('ready', () => {
