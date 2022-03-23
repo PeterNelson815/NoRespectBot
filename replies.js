@@ -16,6 +16,7 @@ const chooseRandomReply = () => {
 
 module.exports = {
   handleReplies: (message) => {
+    if (message.member.displayName === 'No Respect Bot') return
     if (message.member.displayName === 'MathBot') {
       if (
         message.content

@@ -32,9 +32,8 @@ client.on('threadCreate', async (thread) => {
 })
 
 client.on('messageCreate', async (message) => {
-  await incrementMessageCounter()
   if (message.content[0] === '=') {
-    handleCommands(message)
+    handleCommands(message, client)
     // don't need to handle reactions/replies for bot commands
     return
   }
@@ -45,6 +44,8 @@ client.on('messageCreate', async (message) => {
 
 client.login(createToken())
 
+/*
+ trash code, just using to remember reading/writing from store
 const incrementMessageCounter = async () => {
   let messageCount = await getProperty('messageCount')
   console.log('message count is', messageCount)
@@ -52,3 +53,5 @@ const incrementMessageCounter = async () => {
   messageCount++
   await writeToStore('messageCount', messageCount)
 }
+
+*/
