@@ -6,21 +6,50 @@ const RACE_STATUS = {
 
 const initiateRace = async (client) => {
   await writeRaceStatusToDiscord(client, RACE_STATUS.INITIATED)
+  await initializePlayerInterface(client)
 }
 
-const addRacer = async member => {
+const addRacer = async (client, user) => {
+  console.log('in add racer')
+  const raceChannel = client.channels.cache.find(channel => channel.name === 'pokemon-race-data')
+  if (!raceChannel) {
+    console.log('race channel not found, very yikes, everything is broken')
+    return
+  }
 
-  await writeDataBackupToDiscord(client)
+  const raceChannelMessages = await raceChannel.messages.fetch()
+  let addRacerMessage
+  raceChannelMessages.forEach(message => {
+    if (message.content.includes(`Id:${user.id}`)) {
+      addRacerMessage = message
+      raceChannel.send(`User ${user.username} already exists in race`)
+    }
+  })
+
+  console.log(`addRacerMessage is: ${addRacerMessage}`)
+  if (!addRacerMessage) {
+    const addRacerMessage = await raceChannel.send(`Id:${user.id}::Username:${user.username}::Deaths:0::Badges:0`)
+  }
 }
 
-const removeRacer = async member => {
+const removeRacer = async (client, user) => {
+  const raceChannel = client.channels.cache.find(channel => channel.name === 'pokemon-race-data')
+  if (!raceChannel) {
+    console.log('race channel not found, very yikes, everything is broken')
+    return
+  }
 
-  await writeDataBackupToDiscord(client)
+  const raceChannelMessages = await raceChannel.messages.fetch()
+  raceChannelMessages.forEach(async message => {
+    if (message.content.includes(`Id:${user.id}`)) {
+      await message.delete()
+      console.log(`User ${user.username} deleted from race`)
+    }
+  })
 }
 
 const startRace = async (client) => {
   await writeRaceStatusToDiscord(client, RACE_STATUS.IN_PROGRESS)
-  await initializePlayerInterface(client)
 }
 
 const addDeath = async member => {
@@ -49,41 +78,34 @@ const initializePlayerInterface = async (client) => {
     return
   }
 
-  let messages = await raceChannel.messages.fetch()
-  let playerInterfaceMessage
-  messages.forEach(message => {
-    if (message.content.includes('**PLAYER INTERFACE**')) playerInterfaceMessage = message
-  })
+  const joinEmoji = raceChannel.guild.emojis.cache.find(emoji => emoji.name === 'nrPokeball')
+  const leaveEmoji = raceChannel.guild.emojis.cache.find(emoji => emoji.name === 'nrDisgust')
+  if (!joinEmoji || !leaveEmoji) {
+    console.log('could not find one of the emoji, exiting')
+    return
+  }
 
-  if (!playerInterfaceMessage) {
-    const joinEmoji = raceChannel.guild.emojis.cache.find(emoji => emoji.name === 'nrPokeball')
-    const leaveEmoji = raceChannel.guild.emojis.cache.find(emoji => emoji.name === 'nrDisgust')
-    if (!joinEmoji || !leaveEmoji) {
-      console.log('could not find one of the emoji, exiting')
-      return
-    }
-
-    playerInterfaceMessage = await raceChannel.send(
-      `**PLAYER INTERFACE**
+  const playerInterfaceMessage = await raceChannel.send(
+    `**PLAYER INTERFACE**
 React with ${joinEmoji} to join the race.
 React with ${leaveEmoji} to leave the race.`)
-    await playerInterfaceMessage.react(joinEmoji)
-    await playerInterfaceMessage.react(leaveEmoji)
+  await playerInterfaceMessage.react(joinEmoji)
+  await playerInterfaceMessage.react(leaveEmoji)
 
-    client.on('messageReactionAdd', async (reaction, user) => {
-      if (user.username.includes('No Respect Bot')) return
-      if (reaction.message.id === playerInterfaceMessage.id) {
-        if (reaction._emoji.name === 'nrPokeball') {
-          console.log(`User ${user.username} id ${user.id} joined the race`)
-          await reaction.users.remove(user.id)
-        }
-        if (reaction._emoji.name === 'nrDisgust') {
-          console.log(`User ${user.username} id ${user.id} left the race`)
-          await reaction.users.remove(user.id)
-        }
+  client.on('messageReactionAdd', async (reaction, user) => {
+    if (user.username.includes('No Respect Bot')) return
+    if (reaction.message.id === playerInterfaceMessage.id) {
+      if (reaction._emoji.name === 'nrPokeball') {
+        await addRacer(client, user)
+        await reaction.users.remove(user.id)
       }
-    })
-  }
+      if (reaction._emoji.name === 'nrDisgust') {
+        console.log(`User ${user.username} id ${user.id} left the race`)
+        await removeRacer(client, user)
+        await reaction.users.remove(user.id)
+      }
+    }
+  })
 }
 
 const writeRaceStatusToDiscord = async (client, status) => {
