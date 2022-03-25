@@ -36,7 +36,8 @@ const getReactionEmojiList = (message) => {
   )
     reactionEmojis.push('nrgretchen')
   if (messageLowerCase.match(/\b(olive)\b/)) reactionEmojis.push('nrolive2')
-  if (messageLowerCase.includes('friday')) {
+  if (messageLowerCase.includes('friday') ||
+    messageLowerCase.includes('DfEnIFV2-mc')) {
     reactionEmojis.push('nrfriday')
     reactionEmojis.push('nrfridaynight')
     reactionEmojis.push('nrfridaynight2')
