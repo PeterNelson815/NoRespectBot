@@ -43,12 +43,12 @@ const getReactionEmojiList = (message) => {
     reactionEmojis.push('nrfridaynight2')
   }
   if (messageLowerCase.includes('blizzard')) reactionEmojis.push('nreww')
-  if (
+  /* if (
     message.member.user.username.toLocaleLowerCase().includes('wentza') &&
     message.content.split(' ').length >= 20
   ) {
     reactionEmojis.push('nryikes')
-  }
+  } */
   if (messageLowerCase.includes('kitsuragi')) reactionEmojis.push('nrkim')
   if (messageLowerCase.includes('expression')) reactionEmojis.push('nrdisco')
   if (messageLowerCase.includes('tenz')) reactionEmojis.push('nrtenz')
