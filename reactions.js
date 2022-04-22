@@ -36,8 +36,9 @@ const getReactionEmojiList = (message) => {
   )
     reactionEmojis.push('nrgretchen')
   if (messageLowerCase.match(/\b(olive)\b/)) reactionEmojis.push('nrolive2')
+  const wasPostedByTurbo = message.member.user.id === '138493486075871241'
   if (messageLowerCase.includes('friday') ||
-    messageLowerCase.includes('DfEnIFV2-mc')) {
+    (wasPostedByTurbo && messageLowerCase.includes('youtube'))) {
     reactionEmojis.push('nrfriday')
     reactionEmojis.push('nrfridaynight')
     reactionEmojis.push('nrfridaynight2')
