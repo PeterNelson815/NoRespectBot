@@ -4,7 +4,9 @@ const { createToken } = require('./auth.js')
 const { handleReactions } = require('./reactions.js')
 const { handleReplies } = require('./replies.js')
 const { handleCommands } = require('./commands.js')
-const { getProperty, writeToStore } = require('./datastore.js')
+
+const EventLogger = require('node-windows').EventLogger
+const log = new EventLogger('NoRespectBot')
 
 //start the webserver
 require('./webserver.js')
@@ -22,7 +24,7 @@ const client = new Client({
 })
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`)
+  log.info(`Logged in as ${client.user.tag}!`)
 })
 
 client.on('threadCreate', async (thread) => {
@@ -46,15 +48,3 @@ client.on('messageCreate', async (message) => {
 })
 
 client.login(createToken())
-
-/*
- trash code, just using to remember reading/writing from store
-const incrementMessageCounter = async () => {
-  let messageCount = await getProperty('messageCount')
-  console.log('message count is', messageCount)
-  if (!messageCount) messageCount = 0
-  messageCount++
-  await writeToStore('messageCount', messageCount)
-}
-
-*/

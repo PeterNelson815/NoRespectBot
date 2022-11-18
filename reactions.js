@@ -1,3 +1,6 @@
+const EventLogger = require('node-windows').EventLogger
+const log = new EventLogger('NoRespectBot')
+
 module.exports = {
   handleReactions: (message) => {
     const reactionEmojis = getReactionEmojiList(message)
@@ -9,7 +12,7 @@ module.exports = {
       if (emoji) {
         message.react(emoji)
       } else {
-        console.log(`no emoji found for ${reaction}`)
+        log.warn(`no emoji found for ${reaction}`)
       }
     })
   },

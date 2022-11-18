@@ -19,9 +19,3 @@ app.get('/messageCounter', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-const http = require('http')
-setInterval(function () {
-  console.log(`poking myself to stay awake at ${new Date(Date.now())}`)
-  http.get('http://bsb-no-respect-bot.herokuapp.com/')
-}, 300000) // every 5 minutes (300000)
